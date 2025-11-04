@@ -163,7 +163,6 @@ def solve_heat_equation(T_old, avg_heat_source_mesh, alphas, fin_temp, dt):
             
             # --- Right Hand Side (b vector) ---
             # (rho*cp/dt)*T_old + Q_source
-            # NOTE: User has source term commented out for debugging
             b[i] = accum_term * T_old[k, j] + avg_heat_source_mesh[k, j]
             
             # --- Left Hand Side (A matrix) ---
@@ -212,7 +211,6 @@ def solve_heat_equation(T_old, avg_heat_source_mesh, alphas, fin_temp, dt):
         # --- MODIFICATION: Return 0.0 for flux on failure ---
         return np.copy(T_old), 0.0
     
-    # --- MODIFICATION: Calculate Q_from_solid (Watts) ---
     # This is the total heat (in Watts) flowing from the solid mesh 
     # into the fin for this entire zone.
     
@@ -239,18 +237,12 @@ def solve_heat_equation(T_old, avg_heat_source_mesh, alphas, fin_temp, dt):
     Q_from_solid_total = q_flux_avg * A_total_surface
     
     return T_new, Q_from_solid_total
-    # --- END MODIFICATION ---
 
 def solve_pressure_empty(P_guess_input, avg_mass_source_mesh, T_mesh, alphas, P_inf, use_warm_start=True):
     return P_guess_input
 
 def solve_heat_equation_empty(T_old, avg_heat_source_mesh, alphas, fin_temp, dt):
-    # --- MODIFICATION: Match new return signature ---
     return T_old, 0.0
-
-# --- MODIFICATION: Removed obsolete function update_fin_and_htf ---
-
-# --- MODIFICATION: Removed obsolete function solve_inter_fin_conduction ---
 
 
 def solve_fin_htf_network(Q_from_solid_zones, T_fin_guess, T_htf_guess, T_htf_inlet, 
